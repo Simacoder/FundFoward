@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-h5$!^*besa40pxvtl4zfnu@vxdqzw3n*2l5_owdw3uwf7u^=ir
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'nodumehlezi.pythonanywhere.com',
+    '127.0.0.1',
+    'localhost',
+]
+
 
 
 # Application definition
