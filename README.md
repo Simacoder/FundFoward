@@ -118,13 +118,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-4. **Train & load model** (optional for first run)
 
-```bash
-python manage.py train_model
-```
-
-5. **Access app:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+4. **Access app:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
@@ -143,3 +138,6 @@ MIT License – free to use, modify, and distribute.
 
 # AUTHOR
 - Simanga Mchunu
+- Yusairah Ismail
+- Patience Mabuza
+- Nkosinathi Nhlapo
