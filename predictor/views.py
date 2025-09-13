@@ -351,15 +351,15 @@ def fund_match(request, match_id):
         amount = Decimal(request.POST.get("amount", "0"))
     except (TypeError, ValueError, ArithmeticError):
         messages.error(request, "Invalid amount.")
-        return redirect("donor_dashboard")  # ✅ removed donor_id
+        return redirect("donor_dashboard")  #  removed donor_id
 
     if amount <= 0:
         messages.error(request, "Amount must be greater than 0.")
-        return redirect("donor_dashboard")  # ✅ removed donor_id
+        return redirect("donor_dashboard")  #  removed donor_id
 
     if donor.wallet_balance < amount:
         messages.error(request, "Insufficient wallet balance.")
-        return redirect("donor_wallet")  # ✅ donor_id removed, assuming donor_wallet updated to not use donor_id
+        return redirect("donor_wallet")  #  donor_id removed, assuming donor_wallet updated to not use donor_id
 
     # Deduct funds
     donor.wallet_balance -= amount
@@ -398,7 +398,7 @@ def fund_match(request, match_id):
                 bursary.student.save(update_fields=["registration_paid"])
 
     messages.success(request, f"Funded R{amount:.2f}. Transaction ref: {tx.tx_ref}")
-    return redirect("donor_dashboard")  # ✅ removed donor_id
+    return redirect("donor_dashboard")  
 
 
 # -----------------------

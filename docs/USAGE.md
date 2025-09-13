@@ -38,8 +38,10 @@ python manage.py runserver
 // TODO: Link your demo video and PowerPoint here
 ```
 Check out the Demos: 
-- [Demo Video](../demo/demo.mp4)
-- [Demo Presentation](../demo/demo.pptx)
+- [Demo Video](https://drive.google.com/file/d/1EmYAPmQbqRqcd0s_QxH8cAm-IAi0dyFa/view?usp=sharing)
+- [Demo video how the app works](https://drive.google.com/file/d/164wOa8xzqG_2N51M5ujVqO7b2GTOsc5X/view?usp=sharing)
+- [Demo Presentation](https://drive.google.com/file/d/1ESUxJKAW-09gq_rIjZ_OGxc_hkuCOfV4/view?usp=sharing)
+- [Live Demo](https://nodumehlezi.pythonanywhere.com)
 
 ## 📌 Notes
 ``` c

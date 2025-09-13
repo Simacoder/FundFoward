@@ -1,5 +1,6 @@
 # AI-Powered Micro-Bursaries for Student Banking
 
+[How the app works Demo](https://drive.google.com/file/d/164wOa8xzqG_2N51M5ujVqO7b2GTOsc5X/view?usp=sharing)
 [Live Demo](https://nodumehlezi.pythonanywhere.com/)
 
 ## 📌 Problem Statement
