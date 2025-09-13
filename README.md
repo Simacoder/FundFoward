@@ -1,5 +1,7 @@
 # AI-Powered Micro-Bursaries for Student Banking
 
+[Live Demo](https://nodumehlezi.pythonanywhere.com/)
+
 ## 📌 Problem Statement
 
 In South Africa, **over 60% of the population lives below the poverty line** ([World Bank, 2022](https://www.worldbank.org/en/country/southafrica/overview)). This socio-economic reality directly impacts access to higher education.

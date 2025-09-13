@@ -332,7 +332,7 @@ def upload_academic(request, student_id):
 
 # -----------------------
 # Mock fund action (donor funds a match / bursary)
-#@login_required
+# @login_required  # Optional: you can enable this if you want strict login check
 @user_passes_test(is_donor)
 def fund_match(request, match_id):
     match = get_object_or_404(Match, id=match_id)
@@ -351,41 +351,40 @@ def fund_match(request, match_id):
         amount = Decimal(request.POST.get("amount", "0"))
     except (TypeError, ValueError, ArithmeticError):
         messages.error(request, "Invalid amount.")
-        return redirect("donor_dashboard", donor_id=donor.id)
+        return redirect("donor_dashboard")  # ✅ removed donor_id
 
     if amount <= 0:
         messages.error(request, "Amount must be greater than 0.")
-        return redirect("donor_dashboard", donor_id=donor.id)
+        return redirect("donor_dashboard")  # ✅ removed donor_id
 
     if donor.wallet_balance < amount:
         messages.error(request, "Insufficient wallet balance.")
-        return redirect("donor_wallet", donor_id=donor.id)
+        return redirect("donor_wallet")  # ✅ donor_id removed, assuming donor_wallet updated to not use donor_id
 
     # Deduct funds
     donor.wallet_balance -= amount
-    donor.save()
+    donor.save(update_fields=["wallet_balance"])
 
     # Link to open bursary request if available
     bursary = BursaryRequest.objects.filter(student=match.student, fulfilled=False).first()
 
     tx = Transaction.objects.create(
-    match=match,
-    donor=donor,
-    student=match.student,  
-    bursary_request=bursary,
-    amount=amount,
-    tx_ref=f"MOCK-{timezone.now().strftime('%Y%m%d%H%M%S')}"
-)
-
+        match=match,
+        donor=donor,
+        student=match.student,
+        bursary_request=bursary,
+        amount=amount,
+        tx_ref=f"MOCK-{timezone.now().strftime('%Y%m%d%H%M%S')}"
+    )
 
     # Mark match funded
     match.funded = True
-    match.save()
+    match.save(update_fields=["funded"])
 
     # Mark bursary fulfilled if needed
     if bursary:
         bursary.fulfilled = True
-        bursary.save()
+        bursary.save(update_fields=["fulfilled"])
 
         # Special case: registration fee
         if bursary.priority == "registration_fee":
@@ -394,12 +393,12 @@ def fund_match(request, match_id):
                 rf.is_paid = True
                 rf.flagged = False
                 rf.flagged_reason = "Paid via donor micro-bursary"
-                rf.save()
+                rf.save(update_fields=["is_paid", "flagged", "flagged_reason"])
                 bursary.student.registration_paid = True
-                bursary.student.save()
+                bursary.student.save(update_fields=["registration_paid"])
 
     messages.success(request, f"Funded R{amount:.2f}. Transaction ref: {tx.tx_ref}")
-    return redirect("donor_dashboard", donor_id=donor.id)
+    return redirect("donor_dashboard")  # ✅ removed donor_id
 
 
 # -----------------------
