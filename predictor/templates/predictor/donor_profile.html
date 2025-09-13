@@ -1,0 +1,14 @@
+<!-- templates/predictor/donor_profile.html -->
+{% extends "predictor/base.html" %}
+{% block title %}Donor Profile{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:3rem auto;padding:2rem;background:white;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center;color:#1d4ed8;">Welcome, {{ donor.name }}</h2>
+    <p><strong>Donor Type:</strong> {{ donor.donor_type }}</p>
+    <p><strong>Preferred Course:</strong> {{ donor.preferred_course }}</p>
+    <p><strong>Minimum GPA:</strong> {{ donor.min_gpa }}</p>
+    <p><strong>Max Amount:</strong> {{ donor.max_amount }}</p>
+    <p><strong>Wallet Balance:</strong> R {{ donor.wallet_balance|floatformat:2 }}</p>
+</div>
+{% endblock %}

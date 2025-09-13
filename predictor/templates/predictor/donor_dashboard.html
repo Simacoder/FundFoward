@@ -1,0 +1,111 @@
+{% extends "predictor/base.html" %}
+{% block title %}Donor Dashboard{% endblock %}
+
+{% block content %}
+<div style="max-width:900px;margin:3rem auto;">
+
+    <h2 style="text-align:center;color:#1d4ed8;">Your Dashboard</h2>
+
+    <!-- Donor Rank & Progress -->
+    <div style="background:#f3f4f6;padding:1rem;border-radius:10px;margin-bottom:1.5rem;text-align:center;">
+        <h3>🏆 Your Rank: <span style="color:#1d4ed8;">{{ donor.current_rank }}</span></h3>
+        <p>CSR Score: {{ donor.csr_score }}{% if csr_next_goal %} / {{ csr_next_goal }}{% endif %}</p>
+
+        {% if csr_next_goal %}
+            <div style="background:#e5e7eb;border-radius:8px;height:20px;overflow:hidden;margin:0.5rem auto;width:80%;">
+                <div style="background:#facc15;height:100%;width:{{ csr_progress }}%;transition:width 0.6s;"></div>
+            </div>
+            <small style="color:#6b7280;">Only {{ csr_next_goal|add:"-donor.csr_score"|floatformat:0 }} points to reach {{ donor.next_rank_goal|yesno:"Silver,Gold" }}!</small>
+        {% else %}
+            <small style="color:green;">🎉 You are at the highest tier — keep supporting students!</small>
+        {% endif %}
+    </div>
+
+    <!-- Wallet Balance & Top-Up -->
+    <div style="background:#1d4ed8;color:white;padding:1rem 2rem;border-radius:10px;text-align:center;margin-bottom:2rem;">
+        <h3>
+            Wallet Balance: R 
+            <span id="wallet-balance" data-balance="{{ donor.wallet_balance|floatformat:2 }}">
+                {{ donor.wallet_balance|floatformat:2 }}
+            </span>
+        </h3>
+        <form method="post" style="margin-top:1rem;">
+            {% csrf_token %}
+            {{ topup_form.amount }}
+            <button type="submit" style="background:#facc15;color:#1d4ed8;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">
+                Top Up
+            </button>
+        </form>
+    </div>
+
+    <!-- Global Messages -->
+    {% if messages %}
+        <div style="margin-bottom:1rem;">
+            {% for message in messages %}
+                {% if "success" in message.tags %}
+                    <p style="color:green;font-weight:bold;">{{ message }}</p>
+                {% else %}
+                    <p style="color:red;font-weight:bold;">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Student Matches / Pending Requests -->
+    <h3>Top Students / Pending Matches</h3>
+    <div class="cards" style="display:flex;flex-wrap:wrap;gap:1rem;">
+        {% for match in matches %}
+            <div class="card" style="background:white;padding:1rem;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);flex:1 1 280px;text-align:center;">
+                <h4>{{ match.student.first_name }} {{ match.student.last_name }}</h4>
+                <p>Score: {{ match.score|floatformat:2 }}</p>
+
+                {% if not match.funded %}
+                    <form method="post" action="{% url 'fund_match' match.id %}">
+                        {% csrf_token %}
+                        <input type="number" name="amount" placeholder="Amount to fund" step="1" min="1" required>
+                        <button type="submit" style="background:#facc15;color:#1d4ed8;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">
+                            Fund
+                        </button>
+                    </form>
+                {% else %}
+                    <p style="color:#6b7280;">Already Funded</p>
+                {% endif %}
+
+                <!-- Top Features / Explanation -->
+                {% if match.top_features %}
+                    <div style="margin-top:0.5rem; text-align:left; font-size:0.85rem;">
+                        <strong>Reason:</strong>
+                        {% for key, value in match.top_features.items %}
+                            <div>{{ key }}: {{ value }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+        {% empty %}
+            <p>No students matched yet.</p>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Animation Script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const walletEl = document.getElementById('wallet-balance');
+    const balance = parseFloat(walletEl.dataset.balance);
+
+    // : animate from 0 on page load
+    let current = 0;
+    const step = balance / 50; // 50 steps animation
+    const interval = setInterval(() => {
+        current += step;
+        if (current >= balance) {
+            walletEl.textContent = balance.toFixed(2);
+            clearInterval(interval);
+        } else {
+            walletEl.textContent = current.toFixed(2);
+        }
+    }, 20);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'predictor/base.html' %}
+{% load static %}
+
+{% block title %}Donor Wallet | FundForward{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:2rem auto;padding:2rem;background:white;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center;">
+    <h2 style="color:#1d4ed8;margin-bottom:1rem;">Wallet Balance</h2>
+    <p style="font-size:1.5rem;font-weight:bold;">R {{ donor.wallet_balance|floatformat:2 }}</p>
+
+    <form method="post" style="margin-top:1.5rem;">
+        {% csrf_token %}
+        <input type="number" name="amount" placeholder="Enter top-up amount" step="1" min="1" required
+               style="padding:0.5rem 1rem;border-radius:5px;border:1px solid #ccc;width:70%;margin-bottom:1rem;">
+        <br>
+        <button type="submit" style="background:#facc15;color:#1d4ed8;padding:0.6rem 1.5rem;border:none;border-radius:5px;font-weight:bold;cursor:pointer;">
+            Top Up
+        </button>
+    </form>
+
+    {% if messages %}
+        <div style="margin-top:1rem;">
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <p style="color:red;">
+                        {{ message }}
+                    </p>
+                {% else %}
+                    <p style="color:green;">
+                        {{ message }}
+                    </p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'predictor/base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Top Donor Matches for {{ student.first_name }}</h2>
+  <ul>
+    {% for r in results %}
+      <li>
+        <strong>{{ r.donor.name }}</strong> ({{ r.donor.donor_type }}) —
+        Match Score: {{ r.score|floatformat:2 }}
+        — Preferred Course: {{ r.donor.preferred_course }} — Max ₵{{ r.donor.max_amount }}
+      </li>
+    {% empty %}
+      <li>No matches found.</li>
+    {% endfor %}
+  </ul>
+  <p>Admin/Donor panel can fund matches and mark Transaction.</p>
+</div>
+{% endblock %}

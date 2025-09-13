@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FundForward - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset & base */
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        /*  Background with gray texture */
+        body {
+            background: url('https://www.transparenttextures.com/patterns/grey-wash-wall.png') repeat;
+            background-color: #e5e7eb;
+            color:#333;
+        }
+
+        /* Navbar */
+        nav {
+            background:#1d4ed8;
+            color:white;
+            padding:1rem 2rem;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav .logo { font-weight:bold; font-size:1.5rem; }
+        nav a {
+            color:white;
+            text-decoration:none;
+            margin-left:1rem;
+            font-weight:bold;
+        }
+        nav a:hover { text-decoration:underline; }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(29,78,216,0.85), rgba(29,78,216,0.85)), 
+                        url('https://source.unsplash.com/1600x600/?students,education') center/cover no-repeat;
+            color:white;
+            text-align:center;
+            padding:5rem 2rem;
+            position:relative;
+        }
+        .hero h1 { font-size:3rem; margin-bottom:1rem; animation: fadeIn 1.5s ease-in-out; }
+        .hero p { font-size:1.3rem; margin-bottom:2rem; animation: fadeIn 2s ease-in-out; }
+        .btn {
+            background-color:#facc15;
+            color:#1d4ed8;
+            padding:0.8rem 1.5rem;
+            border-radius:5px;
+            text-decoration:none;
+            font-weight:bold;
+            margin:0 0.5rem;
+            transition: 0.3s;
+        }
+        .btn:hover { background-color:#fbbf24; }
+
+        /* Cards */
+        .cards {
+            display:flex; 
+            flex-wrap:wrap; 
+            justify-content:center; 
+            gap:2rem; 
+            margin-top:3rem;
+        }
+        .card {
+            background:white;
+            padding:2rem;
+            border-radius:10px;
+            box-shadow:0 4px 10px rgba(0,0,0,0.1);
+            flex:1 1 250px;
+            text-align:center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out, box-shadow 0.3s ease;
+        }
+        .card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow:0 10px 25px rgba(29,78,216,0.25);
+        }
+        .card h3 { margin-bottom:1rem; color:#1d4ed8; }
+        .card p { color:#4b5563; }
+
+        /* Sections */
+        section { padding:4rem 2rem; }
+        h2.section-title { text-align:center; margin-bottom:2rem; font-size:2rem; color:#1d4ed8; }
+
+        /* Wallet Summary */
+        .wallet { background:#1d4ed8; color:white; padding:2rem; border-radius:10px; text-align:center; margin:2rem auto; max-width:300px; }
+        .wallet h2 { margin-bottom:1rem; }
+        .wallet p { font-size:1.2rem; }
+
+        /* Footer */
+        footer { background:#1d4ed8; color:white; text-align:center; padding:2rem; margin-top:2rem; }
+
+        /* Animations */
+        @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+
+        @media(max-width:768px){ 
+            .hero h1{ font-size:2.2rem;} 
+            .hero p{ font-size:1rem;} 
+            .cards{flex-direction:column;} 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">FundForward-Izwe</div>
+        <div>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#about">About Us</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero" id="home">
+        <h1>Welcome to FundForward-Izwe</h1>
+        <p>AI-Powered Micro-Bursary Platform for Students & Donors</p>
+        <a href="{% url 'student_register' %}" class="btn">Student Register</a>
+        <a href="{% url 'donor_register' %}" class="btn">Donor Register</a>
+    </div>
+
+    <!-- Services Section -->
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Micro-Bursary Matching</h3>
+                <p>Instant AI-powered matching of students with donors to cover registration, tuition, or living costs.</p>
+            </div>
+            <div class="card">
+                <h3>Donor Dashboard</h3>
+                <p>Track students you fund, manage wallets, and see real-time impact.</p>
+            </div>
+            <div class="card">
+                <h3>Queue Reduction</h3>
+                <p>Universities experience fewer registration delays with automated bursary allocations.</p>
+            </div>
+        </div>
+    </section>
+
+    
+      <!-- About Us Section -->
+    <section id="about">
+        <h2 class="section-title">About Us</h2>
+        <div class="cards">
+            <div class="card" style="flex:1 1 100%; text-align:justify;">
+                <p style="font-size:1.1rem; line-height:1.7;">
+                    <strong>Proof & Paper Society</strong> is where brilliant minds meet bold ideas. 
+                    We are a collective of mathematicians, software engineers, machine learning experts, 
+                    and data scientists on a mission to tackle some of the world’s toughest challenges 
+                    through the power of mathematics, programming, and data-driven insights.
+                </p>
+                <h3 style="margin-top:1.5rem; margin-bottom:1rem; color:#1d4ed8;">Meet the Team</h3>
+                <ul style="list-style:none; padding-left:0; margin-top:0; line-height:1.8;">
+                    <li><strong>Simanga Mchunu</strong> – Machine Learning Engineer, turning data into intelligent solutions</li>
+                    <li><strong>Patience Mabuza</strong> – Data Analyst, uncovering insights that drive action</li>
+                    <li><strong>Yusairah Ismail</strong> – Mathematician, bringing precision and rigor to every problem</li>
+                    <li><strong>Nkosinathi Nhlapo</strong> – Data Scientist, transforming raw data into powerful narratives</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Section -->
+    <section id="dashboard">
+        <h2 class="section-title">My Trend Dashboard</h2>
+
+        <div class="wallet">
+            <h2>Wallet Balance</h2>
+            <p>R {{ donor.wallet_balance|default:"0.00" }}</p>
+        </div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Top Donor</h3>
+                <p>Name: Patience Mabuza</p>
+                <p>Contributed: R 5000</p>
+            </div>
+            <div class="card">
+                <h3>Top Student</h3>
+                <p>Name: Yuraisah Ismail</p>
+                <p>Received: R 4500</p>
+            </div>
+            <div class="card">
+                <h3>Pending Requests</h3>
+                <p>5 Students awaiting funding</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <p style="text-align:center;">Email: support@fundforward.org | Phone: +27 12 345 6789</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2025 FundForward. All Rights Reserved.
+    </footer>
+
+    <!-- JS for fade-in animation -->
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting){
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        cards.forEach(card => observer.observe(card));
+    </script>
+
+</body>
+</html>

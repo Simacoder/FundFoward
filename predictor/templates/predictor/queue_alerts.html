@@ -1,0 +1,42 @@
+{% extends 'predictor/base.html' %}
+
+{% block content %}
+<div class="container" style="max-width:900px; margin:3rem auto;">
+    <h2 style="text-align:center; color:#1d4ed8; margin-bottom:2rem;">Queue Alerts — Unpaid Registration Fees</h2>
+
+    {% if flags %}
+        <div class="cards" style="display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center;">
+            {% for flag in flags %}
+                <div class="card" style="flex:1 1 300px; padding:1.5rem; background:white; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s, box-shadow 0.3s;">
+                    <h3 style="color:#1d4ed8; margin-bottom:0.5rem;">{{ flag.student.first_name }} {{ flag.student.last_name }}</h3>
+                    <p><strong>Student Number:</strong> {{ flag.student.student_number }}</p>
+                    <p><strong>Course:</strong> {{ flag.student.course|default:'N/A' }}</p>
+                    <p><strong>Reason:</strong> {{ flag.flagged_reason }}</p>
+                    <p><strong>Semester:</strong> {{ flag.semester }}</p>
+                    <p><strong>Status:</strong> 
+                        {% if flag.is_paid %}Paid{% else %}Unpaid{% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="text-align:center; font-size:1.2rem;">No students with flagged registration fees at this time.</p>
+    {% endif %}
+</div>
+
+<script>
+    // Optional: subtle fade-in animation for cards
+    document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".card");
+        cards.forEach((card, i) => {
+            card.style.opacity = 0;
+            card.style.transform = "translateY(20px)";
+            setTimeout(() => {
+                card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+                card.style.opacity = 1;
+                card.style.transform = "translateY(0)";
+            }, i * 150);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+<!-- predictor/templates/predictor/fund_student.html -->
+{% extends "predictor/base.html" %}
+{% block title %}Fund {{ student.user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:3rem auto;padding:2rem;background:white;border-radius:10px;">
+    <h2>Fund {{ student.user.get_full_name }}</h2>
+    <p>Current wallet balance: R {{ donor.wallet_balance|floatformat:2 }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background:#facc15;color:#1d4ed8;border:none;padding:0.5rem 1rem;border-radius:5px;">Fund</button>
+    </form>
+</div>
+{% endblock %}

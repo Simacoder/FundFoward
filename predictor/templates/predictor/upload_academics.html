@@ -1,0 +1,42 @@
+{% extends 'predictor/base.html' %}
+{% load static %}
+
+{% block title %}Upload Academic Records | FundForward{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:3rem auto;padding:2rem;background:white;border-radius:10px;box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align:center;color:#1d4ed8;margin-bottom:1.5rem;">Upload Academic Records</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" style="display:block;margin:1rem auto;background:#facc15;color:#1d4ed8;padding:0.8rem 1.5rem;border:none;border-radius:5px;font-weight:bold;cursor:pointer;">
+            Upload
+        </button>
+    </form>
+
+    {% if messages %}
+        <div style="margin-top:1rem;text-align:center;">
+            {% for message in messages %}
+                {% if 'error' in message.tags %}
+                    <p style="color:red;">{{ message }}</p>
+                {% elif 'success' in message.tags %}
+                    <p style="color:green;">{{ message }}</p>
+                {% else %}
+                    <p style="color:black;">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% if records %}
+        <h3 style="margin-top:2rem;color:#1d4ed8;">Previously Uploaded Records:</h3>
+        <ul>
+            {% for record in records %}
+                <li>{{ record.file.name }} — Uploaded at {{ record.uploaded_at|date:"M d, Y H:i" }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

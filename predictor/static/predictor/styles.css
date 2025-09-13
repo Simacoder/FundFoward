@@ -1,0 +1,7 @@
+body { font-family: Arial, sans-serif; background:#f5f7fb; color:#222; margin:0; }
+.topbar { background:#0b5cff; color:white; padding:18px; }
+.topbar h1 { margin:0; font-size:20px; display:inline-block; }
+.topbar nav { float:right; margin-top: -4px; }
+.card { background:white; padding:20px; border-radius:8px; width:640px; margin:20px auto; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+button { background:#007BFF; color:white; border:none; padding:10px 14px; border-radius:6px; cursor:pointer; }
+input, select, textarea { width:100%; padding:8px; margin:6px 0; border-radius:6px; border:1px solid #ddd; box-sizing:border-box; }

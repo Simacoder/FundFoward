@@ -1,0 +1,149 @@
+{% extends "predictor/base.html" %}
+{% block title %}Transparency Dashboard{% endblock %}
+
+{% block content %}
+<div style="max-width:1200px;margin:2rem auto;">
+
+    <h2 style="text-align:center;color:#1d4ed8;">Transparency Dashboard</h2>
+
+    <!-- Wallet Top-Up (Donors only) -->
+    {% if user.is_authenticated and user.donor %}
+    <div style="background:#1d4ed8;color:white;padding:1rem 2rem;border-radius:10px;text-align:center;margin-bottom:2rem;">
+        <h3>Your Wallet Balance: R {{ user.donor.wallet_balance|floatformat:2 }}</h3>
+        <form method="post" style="margin-top:1rem;">
+            {% csrf_token %}
+            {{ topup_form.amount }}
+            <button type="submit" style="background:#facc15;color:#1d4ed8;border:none;padding:0.5rem 1rem;border-radius:5px;cursor:pointer;">
+                Add / Remove Funds
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Total Funded -->
+    <h3>Total Funded: R {{ total_funded|floatformat:2 }}</h3>
+
+    <!-- Payments Table -->
+    <h3>All Payments</h3>
+    <table style="width:100%; border-collapse: collapse; margin-bottom:2rem;">
+        <thead>
+            <tr style="background:#1d4ed8;color:white;">
+                <th style="padding:0.5rem;">Student</th>
+                <th>Donor / Source</th>
+                <th>Amount (R)</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in payments %}
+            <tr style="border-bottom:1px solid #ddd;">
+                <td>{{ p.student.user.get_full_name|default:"-" }}</td>
+                <td>{{ p.donor.user.get_full_name|default:"University/Trust" }}</td>
+                <td>{{ p.amount|floatformat:2 }}</td>
+                <td>{{ p.payment_type }}</td>
+                <td>{{ p.description|default:"-" }}</td>
+                <td>{{ p.timestamp|date:"Y-m-d H:i" }}</td>
+                <td>{{ p.approved|yesno:"Approved,Pending" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" style="text-align:center;">No payments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Top Donors Table -->
+    <h3>Top Donors</h3>
+    <table style="width:100%; border-collapse: collapse; margin-bottom:2rem;">
+        <thead>
+            <tr style="background:#1d4ed8;color:white;">
+                <th style="padding:0.5rem;">Donor</th>
+                <th>Total Funded (R)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in donors %}
+            <tr style="border-bottom:1px solid #ddd;">
+                <td>{{ d.donor__user__first_name }} {{ d.donor__user__last_name }}</td>
+                <td>{{ d.total_funded|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" style="text-align:center;">No donor payments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Top Students Table -->
+    <h3>Top Students (Received)</h3>
+    <table style="width:100%; border-collapse: collapse; margin-bottom:2rem;">
+        <thead>
+            <tr style="background:#1d4ed8;color:white;">
+                <th style="padding:0.5rem;">Student</th>
+                <th>Total Received (R)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr style="border-bottom:1px solid #ddd;">
+                <td>{{ s.student__user__first_name }} {{ s.student__user__last_name }}</td>
+                <td>{{ s.total_received|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2" style="text-align:center;">No student payments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Chart Section -->
+    <h3>Funding Over Time</h3>
+    <canvas id="fundChart" style="margin-top:2rem;"></canvas>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('fundChart').getContext('2d');
+    const labels = [
+        {% for f in daily_funding %}
+            "{{ f.timestamp__date|date:'Y-m-d' }}"{% if not forloop.last %},{% endif %}
+        {% empty %}
+            "No Data"
+        {% endfor %}
+    ];
+    const data = [
+        {% for f in daily_funding %}
+            {{ f.total|floatformat:2 }}{% if not forloop.last %},{% endif %}
+        {% empty %}
+            0
+        {% endfor %}
+    ];
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Daily Funding (R)',
+                data: data,
+                borderColor: '#1d4ed8',
+                backgroundColor: 'rgba(29,78,216,0.2)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: true } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+</script>
+{% endblock %}

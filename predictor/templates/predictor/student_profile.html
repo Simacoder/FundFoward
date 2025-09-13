@@ -1,0 +1,23 @@
+{% extends "predictor/base.html" %}
+{% block title %}Student Profile{% endblock %}
+{% block content %}
+<div style="max-width:600px;margin:3rem auto;padding:2rem;background:white;border-radius:10px;">
+    <h2 style="color:#1d4ed8;text-align:center;">Welcome, {{ student.first_name }}</h2>
+    <p><strong>Student Number:</strong> {{ student.student_number }}</p>
+    <p><strong>Course:</strong> {{ student.course }}</p>
+    <p><strong>GPA:</strong> {{ student.gpa }}</p>
+    <p><strong>Need Score:</strong> {{ student.need_score }}</p>
+    <p><strong>Province:</strong> {{ student.province }}</p>
+
+    <h3 style="margin-top:2rem;color:#1d4ed8;">Academic Records</h3>
+    {% if records %}
+        <ul>
+            {% for record in records %}
+                <li>{{ record.file.name }} — {{ record.uploaded_at|date:"M d, Y H:i" }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No academic records uploaded yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

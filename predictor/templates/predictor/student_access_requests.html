@@ -1,0 +1,22 @@
+{% extends 'predictor/base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Access Requests</h2>
+  <p>Approve or deny access requests from donors wanting to view your records.</p>
+  <ul>
+    {% for ar in requests %}
+      <li>
+        From: {{ ar.donor.name }} — Message: {{ ar.message|default:"(no message)" }} — Created: {{ ar.created_at }}
+        <form method="post" style="display:inline">
+          {% csrf_token %}
+          <input type="hidden" name="ar_id" value="{{ ar.id }}">
+          <button name="action" value="approve" class="btn">Approve</button>
+          <button name="action" value="deny" class="btn" style="background:#ef4444;color:#fff">Deny</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No pending requests.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Services | FundForward</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body { background: rgba(240,240,240,0.85); font-family:'Segoe UI', sans-serif; }
+        nav { background:#1d4ed8; padding:1rem 2rem; color:white; display:flex; justify-content:space-between; align-items:center; }
+        nav .logo { font-weight:bold; font-size:1.5rem; }
+        nav a { color:white; margin-left:1rem; text-decoration:none; font-weight:bold; }
+        nav a:hover { text-decoration:underline; }
+
+        section { padding:4rem 2rem; }
+        h2.section-title { text-align:center; color:#1d4ed8; margin-bottom:2rem; font-size:2rem; }
+
+        .cards { display:flex; flex-wrap:wrap; justify-content:center; gap:2rem; }
+        .card { background:white; padding:2rem; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); flex:1 1 250px; text-align:center; transition: transform 0.3s, box-shadow 0.3s; animation: fadeIn 1s ease-in; }
+        .card:hover { transform:translateY(-10px); box-shadow:0 8px 20px rgba(0,0,0,0.15); }
+        .card h3 { color:#1d4ed8; margin-bottom:1rem; }
+        .card p { color:#4b5563; }
+
+        @keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
+
+        @media(max-width:768px){ .cards{flex-direction:column;} }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">FundForward</div>
+        <div>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'student_register' %}">Student Register</a>
+            <a href="{% url 'donor_register' %}">Donor Register</a>
+            <a href="{% url 'home' %}#services">Services</a>
+        </div>
+    </nav>
+
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Micro-Bursary Matching</h3>
+                <p>AI-powered matching of students with donors to cover registration, tuition, or living costs.</p>
+            </div>
+            <div class="card">
+                <h3>Donor Dashboard</h3>
+                <p>Track your contributions, wallet balance, and see real-time impact on students.</p>
+            </div>
+            <div class="card">
+                <h3>Queue Reduction</h3>
+                <p>Universities experience fewer registration delays with automated bursary allocations.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>

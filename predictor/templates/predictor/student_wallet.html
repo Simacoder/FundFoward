@@ -1,0 +1,18 @@
+<!-- predictor/templates/predictor/student_wallet.html -->
+{% extends "predictor/base.html" %}
+{% block title %}My Wallet{% endblock %}
+
+{% block content %}
+<div style="max-width:600px;margin:3rem auto;padding:2rem;background:white;border-radius:10px;">
+    <h2>Wallet Balance: R {{ student.wallet_balance|floatformat:2 }}</h2>
+
+    <h3>Recent Transactions</h3>
+    <ul>
+        {% for tx in transactions %}
+            <li>{{ tx.created_at|date:"M d, Y H:i" }} - {{ tx.description }}: R {{ tx.amount|floatformat:2 }}</li>
+        {% empty %}
+            <li>No transactions yet.</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

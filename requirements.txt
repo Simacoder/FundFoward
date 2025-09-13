@@ -1,0 +1,8 @@
+Django>=4.2
+pandas
+numpy
+scikit-learn
+joblib
+gunicorn
+psycopg2-binary==2.9.9 
+djangorestframework==3.20.1

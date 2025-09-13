@@ -1,0 +1,13 @@
+{% extends 'predictor/base.html' %}
+{% block content %}
+<div class="card">
+  <h2>Academic Records — {{ student.first_name }} {{ student.last_name }}</h2>
+  <ul>
+    {% for r in records %}
+      <li><a href="{{ r.file.url }}" target="_blank">{{ r.title }}</a> — uploaded {{ r.uploaded_at }}</li>
+    {% empty %}
+      <li>No records uploaded.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

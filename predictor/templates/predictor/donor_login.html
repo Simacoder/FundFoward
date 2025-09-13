@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Donor Login | FundForward</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            background: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 380px;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        h2 { 
+            text-align:center; 
+            color:#1d4ed8; 
+            margin-bottom:1.5rem; 
+            font-size: 1.5rem;
+        }
+        form p {
+            margin: 0 0 1rem 0;
+        }
+        input {
+            width: 100%;
+            padding: 0.7rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+        button {
+            width: 100%;
+            background:#facc15;
+            color:#1d4ed8;
+            border:none;
+            padding:0.8rem;
+            border-radius:8px;
+            font-weight:bold;
+            cursor:pointer;
+            transition: background 0.3s ease;
+            font-size: 1rem;
+        }
+        button:hover { background:#fbbf24; }
+        .register-link {
+            text-align:center;
+            margin-top:1rem;
+            font-size:0.9rem;
+        }
+        .register-link a { 
+            color:#1d4ed8; 
+            text-decoration:underline; 
+            font-weight:bold; 
+        }
+        .errorlist {
+            color: red;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        @keyframes fadeIn { 
+            from { opacity:0; transform:translateY(-20px); } 
+            to { opacity:1; transform:translateY(0); } 
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2>Donor Login</h2>
+    {% if form.errors %}
+        <div class="errorlist">
+            Please check your email and password and try again.
+        </div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+        <button type="submit">Login</button>
+    </form>
+    <div class="register-link">
+        Don't have an account? <a href="{% url 'donor_register' %}">Register here</a>
+    </div>
+</div>
+
+</body>
+</html>
